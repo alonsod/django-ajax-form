@@ -1,7 +1,7 @@
 import json
 from django import forms
 from django.forms import formsets
-
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.views.generic.simple import direct_to_template
 
@@ -22,13 +22,13 @@ class ExampleForm(forms.Form):
             choices=[('y', 'yes'), ('no', 'no')],
             widget=forms.RadioSelect(attrs={'class': 'nya'})
             )
-
+'''    
+    If you want add errors ( To Example Form), uncomment this.
     def clean(self):
         if not self.errors:
             raise forms.ValidationError(u"Example error in clean")
         return self.cleaned_data
-
-
+'''
 def index(request):
     if request.POST:
         form = ExampleForm(data=request.POST)
@@ -43,13 +43,18 @@ def index(request):
 
 def ajax_formset(request):
     formset_class = formsets.formset_factory(ExampleForm)
+    rdict = {'validForm':'true'}
     if request.POST:
         formset = formset_class(data=request.POST)
+        if formset.is_valid():
+            rdict.update({'validForm':'false'})        
     else:
-        formset = formset_class()
+        formset = formset_class()        
 
-    if request.is_ajax():
-        formset_dict = FormSerializer().serialize(formset)
-        return json_response(formset_dict, request)
+    if request.is_ajax():                
+        formset_dict = FormSerializer().serialize(formset)              
+        rdict.update({'form': formset_dict  })
+        return json_response(rdict, request)
 
-    return direct_to_template(request, 'ajax_formset.html', {'formset': formset})
+    return direct_to_template(request, 'ajax_formset.html', {'formset': rdict})
+    

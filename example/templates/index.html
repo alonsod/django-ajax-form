@@ -6,12 +6,17 @@
     {% block js %}
 
     {% endblock js %}
-
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
     <div id="content">
         {% block content %}
         {% endblock content %}
     </div>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/google-code-prettify/prettify.js"></script>
+    <script src="/static/js/bootstrap-transition.js"></script>
+    <script src="/static/js/bootstrap-alert.js"></script>
+    <script src="/static/js/bootstrap-modal.js"></script>    
 </body>
 </html>
