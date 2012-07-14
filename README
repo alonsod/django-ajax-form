@@ -1,0 +1,6 @@
+
+Thanks to Apkawa.
+
+This example shows how to generate a form via Ajax. Send and receive the results of Django by Ajax.
+
+The form is presented in a popup using bootstrap.Modal.
