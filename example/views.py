@@ -3,7 +3,8 @@ from django import forms
 from django.forms import formsets
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.views.generic.simple import direct_to_template
+#from django.views.generic.simple import direct_to_template
+from django.shortcuts import render
 
 
 from ajax_form.form_serializer import FormSerializer
@@ -22,8 +23,9 @@ class ExampleForm(forms.Form):
             choices=[('y', 'yes'), ('no', 'no')],
             widget=forms.RadioSelect(attrs={'class': 'nya'})
             )
-'''    
-    If you want add errors ( To Example Form), uncomment this.
+    
+    #If you want add errors ( To Example Form), uncomment this.
+'''
     def clean(self):
         if not self.errors:
             raise forms.ValidationError(u"Example error in clean")
@@ -39,7 +41,7 @@ def index(request):
         form_dict = FormSerializer().serialize(form)
         return json_response(form_dict, request)
 
-    return direct_to_template(request, 'ajax_form.html', {'form': form})
+    return render(request, 'ajax_form.html', {'form': form})
 
 def ajax_formset(request):
     formset_class = formsets.formset_factory(ExampleForm)
@@ -56,5 +58,5 @@ def ajax_formset(request):
         rdict.update({'form': formset_dict  })
         return json_response(rdict, request)
 
-    return direct_to_template(request, 'ajax_formset.html', {'formset': rdict})
+    return render(request, 'ajax_formset.html', {'formset': rdict})
     
